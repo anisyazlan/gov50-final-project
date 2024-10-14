@@ -11,4 +11,11 @@ output:
 
 ## Project thoughts
 
-I am interested in exploring data related to The Relationship between democracy and the economic outcomes. I am thinking of using the scale of democracy using Freedom House that is easily accessible in the Internet. Other than that, the economic outcomes can be measured using the innate GDP data in the R Studio, and around the internet. 
+I am interested to analyze the effect of lowering the voting age to the overall voter turnout in Malaysia from General Election 14 (2018) to General Election 15 (2022)
+
+
+
+# Project Milestone 2 
+In my study on the impact of lowering the voting age on overall voter turnout in Malaysia, we've defined our independent variable as the "policy age of voting" and our dependent variable as "overall voters turnout." The treated group consists of newly eligible voters due to the lowered voting age, whereas the control group comprises voters whose eligibility was not affected by this policy change. To isolate the effect of the policy change, we're considering "political awareness at school" and "Socioeconomic Status (SES) post-COVID-19" as potential confounding variables. These factors can significantly influence young people’s likelihood to vote, potentially skewing the results. By controlling for these variables, we aim to ensure that any observed differences in voter turnout can be more reliably attributed to the change in voting age rather than variations in political awareness or socioeconomic conditions.
+
+The voter turnout is easily accessible through github under "Tindak Malaysia".The socioeconomic conditions could be accessed through the government portal. 
