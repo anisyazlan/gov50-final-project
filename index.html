@@ -1633,7 +1633,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>percentage_turnout <span class='op'>=</span> <span class='op'>(</span><span class='va'>total_turnout</span> <span class='op'>/</span> <span class='va'>total_voters</span><span class='op'>)</span> <span class='op'>*</span> <span class='fl'>100</span><span class='op'>)</span></span>
 <span></span>
 <span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>voter_turnout_14</span><span class='op'>)</span></span></code></pre>
+<span><span class='va'>voter_turnout_14</span></span></code></pre>
 </div>
 <pre><code># A tibble: 16 × 4
    STATE            total_voters total_turnout percentage_turnout
@@ -1663,7 +1663,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>total_voters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>`TOTAL ELECTORATE`</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,</span>
 <span>            average_turnout_percentage <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>`TURNOUT (%)`</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>voter_turnout_15</span><span class='op'>)</span></span></code></pre>
+<span><span class='va'>voter_turnout_15</span></span></code></pre>
 </div>
 <pre><code># A tibble: 16 × 3
    STATE                           total_voters average_turnout_perc…¹
@@ -1721,7 +1721,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>  <span class='op'>)</span> <span class='op'>|&gt;</span> </span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>total_voters_14</span><span class='op'>)</span><span class='op'>|&gt;</span> </span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>pct_diff <span class='op'>=</span> <span class='va'>pct_turnout_15</span> <span class='op'>-</span> <span class='va'>pct_turnout_14</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>voter_turnout</span><span class='op'>)</span> </span></code></pre>
+<span><span class='va'>voter_turnout</span></span></code></pre>
 </div>
 <pre><code># A tibble: 13 × 6
    state     total_vote_14 pct_turnout_14 total_vote_15 pct_turnout_15

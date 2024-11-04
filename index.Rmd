@@ -74,7 +74,7 @@ voter_turnout_14 <- voter_turnout_14 |>
   mutate(percentage_turnout = (total_turnout / total_voters) * 100)
 
 
-print(voter_turnout_14)
+voter_turnout_14
 
 ```
 
@@ -86,7 +86,7 @@ voter_turnout_15 <- voter_turnout_15 |>
   summarise(total_voters = sum(`TOTAL ELECTORATE`, na.rm = TRUE),
             average_turnout_percentage = mean(`TURNOUT (%)`, na.rm = TRUE))
 
-print(voter_turnout_15)
+voter_turnout_15
 
 ```
 
@@ -105,7 +105,7 @@ voter_turnout <- voter_turnout |>
   ) |> 
   select(-total_voters_14)|> 
   mutate(pct_diff = pct_turnout_15 - pct_turnout_14)
-print(voter_turnout) 
+voter_turnout
 ```
 
 
