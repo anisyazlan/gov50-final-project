@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.28/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["DATA/~$All_data_FIW_2013-2021.xlsx","DATA/All_data_FIW_2013-2021.xlsx","DATA/democracy-index-by-source.csv","DATA/EGOV_DATA_Malaysia_03112024_212016.csv","DATA/gdp_gni_annual_nominal.csv","DATA/ISEAS_Perspective_2022_63.pdf","DATA/MALAYSIA_GE15_PARLIAMENT_ELECTIONS_v25122022.csv","DATA/VOTER TURNOUT OF GE12,GE13 AND GE14.csv","DATA/voting age.xls","DATA/Voting turnout Malaysia election.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-6-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.28/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1548,7 +1548,220 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <h1 id="project-milestone-2">Project Milestone 2</h1>
 <p>My research examines the impact of lowering the voting age from 21 to 18 on overall voter turnout in Malaysia, focusing on the newly eligible young voter demographic. I hypothesize that reducing the voting age will lead to increased voter turnout among this group, based on the theory of political mobilization which posits that younger voters are more likely to vote when given the opportunity, driven by a desire to utilize newly acquired rights and influenced by targeted political campaigns. The primary explanatory variable is the “Policy Age of Voting,” which shifted from 21 in General Election 14 to 18 in General Election 15, providing a natural variation. I will also account for confounding variables like “Political Awareness at School” and “Socioeconomic Status (SES) Post-COVID-19” to isolate the effect of the voting age change. The dependent variable, “Overall Voters Turnout,” will be measured by the percentage of eligible voters who participate in the elections. Supporting data would show increased turnout among the 18-21 age group in General Election 15, while a lack of change or a decrease in turnout would challenge the hypothesis.</p>
 <p>The voter turnout is easily accessible through github under “Tindak Malaysia”.The socioeconomic conditions could be accessed through the government portal.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<p>Setup Chunk and load all data</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://readr.tidyverse.org'>readr</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://readxl.tidyverse.org'>readxl</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span><span class='va'>democracy</span> <span class='op'>&lt;-</span>  <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"DATA/democracy-index-by-source.csv"</span><span class='op'>)</span></span>
+<span><span class='va'>voter_turnout_14</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"DATA/VOTER TURNOUT OF GE12,GE13 AND GE14.csv"</span><span class='op'>)</span></span>
+<span><span class='va'>voting_age</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readxl.tidyverse.org/reference/read_excel.html'>read_excel</a></span><span class='op'>(</span><span class='st'>"DATA/voting age.xls"</span><span class='op'>)</span></span>
+<span><span class='va'>malaysia_gdp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"DATA/gdp_gni_annual_nominal.csv"</span><span class='op'>)</span></span>
+<span><span class='va'>voter_turnout_15</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"DATA/MALAYSIA_GE15_PARLIAMENT_ELECTIONS_v25122022.csv"</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>cleanup data</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>democracy</span> <span class='op'>&lt;-</span> <span class='va'>democracy</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Entity</span> <span class='op'>==</span> <span class='st'>"Malaysia"</span>,</span>
+<span>         <span class='va'>Year</span> <span class='op'>&gt;=</span> <span class='fl'>2017</span><span class='op'>)</span></span>
+<span><span class='va'>democracy</span></span></code></pre>
+</div>
+<pre><code># A tibble: 7 × 7
+  Entity   Code   Year Electoral democracy in…¹ Democracy (recoded 0…²
+  &lt;chr&gt;    &lt;chr&gt; &lt;dbl&gt;                    &lt;dbl&gt;                  &lt;dbl&gt;
+1 Malaysia MYS    2017                    0.335                   0.75
+2 Malaysia MYS    2018                    0.441                   0.85
+3 Malaysia MYS    2019                    0.475                  NA   
+4 Malaysia MYS    2020                    0.425                  NA   
+5 Malaysia MYS    2021                    0.426                  NA   
+6 Malaysia MYS    2022                    0.456                  NA   
+7 Malaysia MYS    2023                    0.506                  NA   
+# ℹ abbreviated names:
+#   ¹​`Electoral democracy index (best estimate, aggregate: average)`,
+#   ²​`Democracy (recoded 0-20)`
+# ℹ 2 more variables: `Democracy score...6` &lt;dbl&gt;,
+#   `Democracy score...7` &lt;dbl&gt;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>voting_age</span> <span class='op'>&lt;-</span> <span class='va'>voting_age</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Date</span> <span class='op'>&gt;=</span> <span class='fl'>2014</span><span class='op'>)</span></span>
+<span><span class='va'>voting_age</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>general_election <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>Date</span> <span class='op'>==</span> <span class='st'>"2022-01-01"</span>, <span class='st'>"ge15"</span>, <span class='st'>"ge14"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>Date</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 2 × 2
+  `Voting age population` general_election
+  &lt;chr&gt;                   &lt;chr&gt;           
+1 24,650,080              ge15            
+2 19,794,567              ge14            </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>malaysia_gdp</span> <span class='op'>&lt;-</span> <span class='va'>malaysia_gdp</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>series</span> <span class='op'>==</span> <span class='st'>'growth_yoy'</span>, </span>
+<span>         <span class='va'>date</span> <span class='op'>&gt;=</span> <span class='fl'>2010</span><span class='op'>-</span><span class='fl'>01</span><span class='op'>-</span><span class='fl'>01</span><span class='op'>)</span></span>
+<span><span class='va'>malaysia_gdp</span></span></code></pre>
+</div>
+<pre><code># A tibble: 48 × 6
+   series     date         gdp   gni gdp_capita gni_capita
+   &lt;chr&gt;      &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+ 1 growth_yoy 1976-01-01 25.8  24.9       22.9       22.0 
+ 2 growth_yoy 1977-01-01 15.2  15.1       12.4       12.3 
+ 3 growth_yoy 1978-01-01 17.1  16.5       14.5       13.8 
+ 4 growth_yoy 1979-01-01 22.5  22.6       19.7       19.7 
+ 5 growth_yoy 1980-01-01 14.8  15.9       11.9       12.9 
+ 6 growth_yoy 1981-01-01  8.08  8.20       5.21       5.32
+ 7 growth_yoy 1982-01-01  8.65  7.39       5.74       4.49
+ 8 growth_yoy 1983-01-01 12.5  10.6        9.55       7.68
+ 9 growth_yoy 1984-01-01 12.9  12.3       10.0        9.41
+10 growth_yoy 1985-01-01 -2.62 -2.99      -5.26      -5.62
+# ℹ 38 more rows</code></pre>
+</div>
+<p>voter turnout General Election 14</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>voter_turnout_14</span> <span class='op'>&lt;-</span> <span class='va'>voter_turnout_14</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>`GE14 VOTERS (2018)` <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>`GE14 VOTERS (2018)`</span><span class='op'>)</span>,</span>
+<span>         `GE 14 VOTER TURNOUT (2018)` <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>`GE 14 VOTER TURNOUT (2018)`</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span></span>
+<span><span class='va'>voter_turnout_14</span> <span class='op'>&lt;-</span> <span class='va'>voter_turnout_14</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>STATE</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>total_voters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>`GE14 VOTERS (2018)`</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,</span>
+<span>            total_turnout <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>`GE 14 VOTER TURNOUT (2018)`</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>percentage_turnout <span class='op'>=</span> <span class='op'>(</span><span class='va'>total_turnout</span> <span class='op'>/</span> <span class='va'>total_voters</span><span class='op'>)</span> <span class='op'>*</span> <span class='fl'>100</span><span class='op'>)</span></span>
+<span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>voter_turnout_14</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 16 × 4
+   STATE            total_voters total_turnout percentage_turnout
+   &lt;chr&gt;                   &lt;dbl&gt;         &lt;dbl&gt;              &lt;dbl&gt;
+ 1 JOHOR                 1817999       1535927               84.5
+ 2 KEDAH                 1146492        957310               83.5
+ 3 KELANTAN              1049527        840849               80.1
+ 4 MELAKA                 494662        420301               85.0
+ 5 NEGERI SEMBILAN        607793        506699               83.4
+ 6 PAHANG                 823981        676492               82.1
+ 7 PERAK                 1510864       1214412               80.4
+ 8 PERLIS                 150221        123568               82.3
+ 9 PULAU PINANG           945627        800080               84.6
+10 SABAH                 1117337        866456               77.5
+11 SARAWAK               1220960        894415               73.3
+12 SELANGOR              2415074       2082179               86.2
+13 TERENGGANU             736632        631180               85.7
+14 W.P KUALA LUMPUR       847793        703589               83.0
+15 W.P LABUAN              28356         21729               76.6
+16 W.P PUTRAJAYA           27306         24881               91.1</code></pre>
+</div>
+<p>Voting Turnout General Election 15</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>voter_turnout_15</span> <span class='op'>&lt;-</span> <span class='va'>voter_turnout_15</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>STATE</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>total_voters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>`TOTAL ELECTORATE`</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,</span>
+<span>            average_turnout_percentage <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>`TURNOUT (%)`</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>voter_turnout_15</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 16 × 3
+   STATE                           total_voters average_turnout_perc…¹
+   &lt;chr&gt;                                  &lt;dbl&gt;                  &lt;dbl&gt;
+ 1 JOHOR                                2616575                   75.8
+ 2 KEDAH                                1575805                   77.9
+ 3 KELANTAN                             1404763                   71.7
+ 4 MELAKA                                657324                   79.6
+ 5 NEGERI SEMBILAN                       850865                   78.2
+ 6 PAHANG                               1136944                   77.7
+ 7 PERAK                                2036872                   74.6
+ 8 PERLIS                                195927                   77.0
+ 9 PULAU PINANG                         1226626                   78.0
+10 SABAH                                1689387                   64.9
+11 SARAWAK                              1943074                   61.7
+12 SELANGOR                             3677848                   80.8
+13 TERENGGANU                            922856                   81.1
+14 WILAYAH PERSEKUTUAN KUALA LUMP…      1151407                   74.8
+15 WILAYAH PERSEKUTUAN LABUAN             44484                   64.7
+16 WILAYAH PERSEKUTUAN PUTRAJAYA          42881                   86.2
+# ℹ abbreviated name: ¹​average_turnout_percentage</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>voter_turnout</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>inner_join</a></span><span class='op'>(</span><span class='va'>voter_turnout_14</span>, <span class='va'>voter_turnout_15</span>, by <span class='op'>=</span> <span class='st'>"STATE"</span><span class='op'>)</span> </span>
+<span><span class='va'>voter_turnout</span></span></code></pre>
+</div>
+<pre><code># A tibble: 13 × 6
+   STATE           total_voters.x total_turnout percentage_turnout
+   &lt;chr&gt;                    &lt;dbl&gt;         &lt;dbl&gt;              &lt;dbl&gt;
+ 1 JOHOR                  1817999       1535927               84.5
+ 2 KEDAH                  1146492        957310               83.5
+ 3 KELANTAN               1049527        840849               80.1
+ 4 MELAKA                  494662        420301               85.0
+ 5 NEGERI SEMBILAN         607793        506699               83.4
+ 6 PAHANG                  823981        676492               82.1
+ 7 PERAK                  1510864       1214412               80.4
+ 8 PERLIS                  150221        123568               82.3
+ 9 PULAU PINANG            945627        800080               84.6
+10 SABAH                  1117337        866456               77.5
+11 SARAWAK                1220960        894415               73.3
+12 SELANGOR               2415074       2082179               86.2
+13 TERENGGANU              736632        631180               85.7
+# ℹ 2 more variables: total_voters.y &lt;dbl&gt;,
+#   average_turnout_percentage &lt;dbl&gt;</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>voter_turnout</span> <span class='op'>&lt;-</span> <span class='va'>voter_turnout</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename</a></span><span class='op'>(</span></span>
+<span>    state <span class='op'>=</span> <span class='va'>`STATE`</span>,</span>
+<span>    total_voters_14 <span class='op'>=</span> <span class='va'>`total_voters.x`</span>,           </span>
+<span>    total_vote_14 <span class='op'>=</span> <span class='va'>`total_turnout`</span>,           </span>
+<span>    pct_turnout_14 <span class='op'>=</span> <span class='va'>`percentage_turnout`</span>,         </span>
+<span>    total_vote_15 <span class='op'>=</span> <span class='va'>`total_voters.y`</span>,           </span>
+<span>    pct_turnout_15 <span class='op'>=</span> <span class='va'>`average_turnout_percentage`</span> </span>
+<span>  <span class='op'>)</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>total_voters_14</span><span class='op'>)</span><span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>pct_diff <span class='op'>=</span> <span class='va'>pct_turnout_15</span> <span class='op'>-</span> <span class='va'>pct_turnout_14</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>voter_turnout</span><span class='op'>)</span> </span></code></pre>
+</div>
+<pre><code># A tibble: 13 × 6
+   state     total_vote_14 pct_turnout_14 total_vote_15 pct_turnout_15
+   &lt;chr&gt;             &lt;dbl&gt;          &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt;
+ 1 JOHOR           1535927           84.5       2616575           75.8
+ 2 KEDAH            957310           83.5       1575805           77.9
+ 3 KELANTAN         840849           80.1       1404763           71.7
+ 4 MELAKA           420301           85.0        657324           79.6
+ 5 NEGERI S…        506699           83.4        850865           78.2
+ 6 PAHANG           676492           82.1       1136944           77.7
+ 7 PERAK           1214412           80.4       2036872           74.6
+ 8 PERLIS           123568           82.3        195927           77.0
+ 9 PULAU PI…        800080           84.6       1226626           78.0
+10 SABAH            866456           77.5       1689387           64.9
+11 SARAWAK          894415           73.3       1943074           61.7
+12 SELANGOR        2082179           86.2       3677848           80.8
+13 TERENGGA…        631180           85.7        922856           81.1
+# ℹ 1 more variable: pct_diff &lt;dbl&gt;</code></pre>
+</div>
+<h2 id="study-the-relationship-between-voting-age-requirement-and-voting-turnout">Study the relationship between voting age requirement and voting turnout</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>voter_turnout</span> <span class='op'>&lt;-</span> <span class='va'>voter_turnout</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>pct_change <span class='op'>=</span> <span class='va'>pct_turnout_15</span> <span class='op'>-</span> <span class='va'>pct_turnout_14</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>voter_turnout</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>state</span>, <span class='va'>pct_change</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='va'>pct_change</span>, fill <span class='op'>=</span> <span class='va'>pct_change</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"identity"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>  </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Change in Voting Turnout from GE14 to GE15"</span>,</span>
+<span>       x <span class='op'>=</span> <span class='st'>"State"</span>,</span>
+<span>       y <span class='op'>=</span> <span class='st'>"Percentage Change (%)"</span>,</span>
+<span>       fill <span class='op'>=</span> <span class='st'>"Change (%)"</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-6-1.png" width="624" /></p>
+</div>
+<p>The bar plot shows a decrease in voter turnout percentage from GE14 to GE15 across all states, with Sabah and Sarawak experiencing the largest declines. Interestingly, despite lowering the voting age and expanding the voter base, the overall turnout did not increase as might have been expected. This suggests that simply increasing the number of eligible voters does not necessarily translate into higher participation. We will then see another possible correlations that might increase / decrease voter turnout</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

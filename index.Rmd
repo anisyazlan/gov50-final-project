@@ -19,3 +19,116 @@ I am interested to analyze the effect of lowering the voting age to the overall 
 My research examines the impact of lowering the voting age from 21 to 18 on overall voter turnout in Malaysia, focusing on the newly eligible young voter demographic. I  hypothesize that reducing the voting age will lead to increased voter turnout among this group, based on the theory of political mobilization which posits that younger voters are more likely to vote when given the opportunity, driven by a desire to utilize newly acquired rights and influenced by targeted political campaigns. The primary explanatory variable is the "Policy Age of Voting," which shifted from 21 in General Election 14 to 18 in General Election 15, providing a natural variation. I will also account for confounding variables like "Political Awareness at School" and "Socioeconomic Status (SES) Post-COVID-19" to isolate the effect of the voting age change. The dependent variable, "Overall Voters Turnout," will be measured by the percentage of eligible voters who participate in the elections. Supporting data would show increased turnout among the 18-21 age group in General Election 15, while a lack of change or a decrease in turnout would challenge the hypothesis.
 
 The voter turnout is easily accessible through github under "Tindak Malaysia".The socioeconomic conditions could be accessed through the government portal. 
+
+
+Setup Chunk and load all data 
+
+```{r}
+library(readr)
+library(readxl)
+library(tidyverse)
+library(dplyr)
+democracy <-  read_csv("DATA/democracy-index-by-source.csv")
+voter_turnout_14 <- read_csv("DATA/VOTER TURNOUT OF GE12,GE13 AND GE14.csv")
+voting_age <- read_excel("DATA/voting age.xls")
+malaysia_gdp <- read_csv("DATA/gdp_gni_annual_nominal.csv")
+voter_turnout_15 <- read_csv("DATA/MALAYSIA_GE15_PARLIAMENT_ELECTIONS_v25122022.csv")
+
+
+```
+
+cleanup data 
+
+```{r}
+democracy <- democracy |>
+  filter(Entity == "Malaysia",
+         Year >= 2017)
+democracy
+
+voting_age <- voting_age |> 
+  filter(Date >= 2014)
+voting_age |> 
+  mutate(general_election = ifelse(Date == "2022-01-01", "ge15", "ge14")) |> 
+  select(-Date)
+
+
+malaysia_gdp <- malaysia_gdp |> 
+  filter(series == 'growth_yoy', 
+         date >= 2010-01-01)
+malaysia_gdp
+
+```
+
+voter turnout General Election 14
+
+```{r}
+voter_turnout_14 <- voter_turnout_14 |>
+  mutate(`GE14 VOTERS (2018)` = as.numeric(`GE14 VOTERS (2018)`),
+         `GE 14 VOTER TURNOUT (2018)` = as.numeric(`GE 14 VOTER TURNOUT (2018)`))
+
+
+voter_turnout_14 <- voter_turnout_14 |>
+  group_by(STATE) |>
+  summarise(total_voters = sum(`GE14 VOTERS (2018)`, na.rm = TRUE),
+            total_turnout = sum(`GE 14 VOTER TURNOUT (2018)`, na.rm = TRUE)) |>
+  mutate(percentage_turnout = (total_turnout / total_voters) * 100)
+
+
+print(voter_turnout_14)
+
+```
+
+Voting Turnout General Election 15 
+
+```{r}
+voter_turnout_15 <- voter_turnout_15 |>
+  group_by(STATE) |>
+  summarise(total_voters = sum(`TOTAL ELECTORATE`, na.rm = TRUE),
+            average_turnout_percentage = mean(`TURNOUT (%)`, na.rm = TRUE))
+
+print(voter_turnout_15)
+
+```
+
+```{r}
+voter_turnout <- inner_join(voter_turnout_14, voter_turnout_15, by = "STATE") 
+voter_turnout
+
+voter_turnout <- voter_turnout |>
+  rename(
+    state = `STATE`,
+    total_voters_14 = `total_voters.x`,           
+    total_vote_14 = `total_turnout`,           
+    pct_turnout_14 = `percentage_turnout`,         
+    total_vote_15 = `total_voters.y`,           
+    pct_turnout_15 = `average_turnout_percentage` 
+  ) |> 
+  select(-total_voters_14)|> 
+  mutate(pct_diff = pct_turnout_15 - pct_turnout_14)
+print(voter_turnout) 
+```
+
+
+## Study the relationship between voting age requirement and voting turnout 
+
+
+```{r}
+library(ggplot2)
+
+voter_turnout <- voter_turnout |>
+  mutate(pct_change = pct_turnout_15 - pct_turnout_14)
+
+ggplot(voter_turnout, aes(x = reorder(state, pct_change), y = pct_change, fill = pct_change)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +  
+  theme_minimal() +
+  labs(title = "Change in Voting Turnout from GE14 to GE15",
+       x = "State",
+       y = "Percentage Change (%)",
+       fill = "Change (%)")
+
+```
+
+The bar plot shows a decrease in voter turnout percentage from GE14 to GE15 across all states, with Sabah and Sarawak experiencing the largest declines. Interestingly, despite lowering the voting age and expanding the voter base, the overall turnout did not increase as might have been expected. This suggests that simply increasing the number of eligible voters does not necessarily translate into higher participation. We will then see another possible correlations that might increase / decrease voter turnout
+
+
