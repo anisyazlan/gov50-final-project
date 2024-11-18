@@ -28,6 +28,8 @@ library(readr)
 library(readxl)
 library(tidyverse)
 library(dplyr)
+library(scales)
+
 democracy <-  read_csv("DATA/democracy-index-by-source.csv")
 voter_turnout_14 <- read_csv("DATA/VOTER TURNOUT OF GE12,GE13 AND GE14.csv")
 voting_age <- read_excel("DATA/voting age.xls")
@@ -113,8 +115,6 @@ voter_turnout
 
 
 ```{r}
-library(ggplot2)
-
 voter_turnout <- voter_turnout |>
   mutate(pct_change = pct_turnout_15 - pct_turnout_14)
 
@@ -127,8 +127,40 @@ ggplot(voter_turnout, aes(x = reorder(state, pct_change), y = pct_change, fill =
        y = "Percentage Change (%)",
        fill = "Change (%)")
 
+
 ```
 
 The bar plot shows a decrease in voter turnout percentage from GE14 to GE15 across all states, with Sabah and Sarawak experiencing the largest declines. Interestingly, despite lowering the voting age and expanding the voter base, the overall turnout did not increase as might have been expected. This suggests that simply increasing the number of eligible voters does not necessarily translate into higher participation. We will then see another possible correlations that might increase / decrease voter turnout
 
 
+Section 2: The change in absolute number of voters 
+
+
+```{r}
+voter_absolute <- voter_turnout |>
+  select(state, total_vote_14, total_vote_15) |>
+  pivot_longer(cols = c(total_vote_14, total_vote_15), 
+               names_to = "election", 
+               values_to = "absolute_voters") |>
+  mutate(election = recode(election, 
+                           "total_vote_14" = "GE14", 
+                           "total_vote_15" = "GE15"))
+
+ggplot(voter_absolute, aes(x = reorder(state, -absolute_voters), 
+                           y = absolute_voters, 
+                           fill = election)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Absolute Number of Voters by State for GE14 and GE15",
+       x = "State",
+       y = "Number of Voters",
+       fill = "Election") +
+  scale_fill_manual(values = c("GE14" = "skyblue", "GE15" = "darkblue")) +
+  scale_y_continuous(labels = comma)
+
+
+```
+
+Graph explanation
+The new graphs show two perspectives on voter turnout between GE14 and GE15: percentage change and absolute number of voters. The percentage turnout graph reflects the proportion of eligible voters who participated in the election, while the absolute voter number graph shows the raw count of voters. The percentage turnout decreased because the eligible voter population grew significantly in GE15, likely due to the inclusion of newly enfranchised 18-21-year-olds. However, the absolute number of voters increased, indicating that more people overall participated in GE15 compared to GE14. This discrepancy occurs because percentage turnout is influenced by the size of the eligible voter base (denominator), while absolute numbers are not. These findings highlight the importance of analyzing both metrics to understand voter behavior comprehensively, particularly in the context of changes in voter eligibility rules.
