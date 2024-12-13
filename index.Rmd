@@ -7,21 +7,40 @@ output:
     self_contained: false
 ---
 
+# Introduction
 
+#### Research Question
+This project aims to investigate the impact of lowering the voting age from 21 to 18 on voter turnout in Malaysia. Specifically, it focuses on the comparison between General Election 14 (GE14) in 2018, when the voting age was 21, and General Election 15 (GE15) in 2022, when the voting age was reduced to 18. This change allows for the examination of whether enfranchising younger voters increases overall participation in democratic processes.
 
-## Project thoughts
+#### Why It Is Interesting
+The decision to lower the voting age in Malaysia represents a significant policy shift and a unique opportunity to study political mobilization theories. Younger voters are traditionally seen as less likely to participate in elections, but providing them with the right to vote may spur engagement through political campaigns, social movements, and newly acquired civic responsibilities. Additionally, understanding the effects of this policy change can inform future electoral reforms in Malaysia and other countries considering similar actions.
 
-I am interested to analyze the effect of lowering the voting age to the overall voter turnout in Malaysia from General Election 14 (2018) to General Election 15 (2022)
+#### Main Hypothesis
+Lowering the voting age to 18 will result in increased voter turnout, particularly among the newly enfranchised demographic of 18-21-year-olds. This hypothesis is grounded in the theory of political mobilization, which posits that individuals are more likely to engage in political activities when they perceive a direct benefit, such as the right to vote. Additionally, targeted political campaigns and social media outreach are expected to enhance the participation of young voters.
 
+#### Variables
+- **Dependent Variable**: 
+  - Overall voter turnout, measured as the percentage of eligible voters who participated in the elections.
+- **Independent Variable**: 
+  - Voting age policy, which shifted from 21 in GE14 to 18 in GE15.
+- **Confounders**: 
+  - Political awareness and civic education at the school level, which may influence young voters' engagement.
+  - Socioeconomic status (SES) post-COVID-19, as economic stability and recovery can affect voter behavior.
+  - Regional differences in political culture and accessibility to polling stations.
 
+#### Objectives
+1. To quantify the change in voter turnout percentages and absolute voter numbers between GE14 and GE15.
+2. To identify demographic and regional patterns in voter turnout resulting from the policy change.
+3. To assess whether lowering the voting age can be linked to causal increases in participation or if other factors played a significant role.
 
-# Project Milestone 2 
-My research examines the impact of lowering the voting age from 21 to 18 on overall voter turnout in Malaysia, focusing on the newly eligible young voter demographic. I  hypothesize that reducing the voting age will lead to increased voter turnout among this group, based on the theory of political mobilization which posits that younger voters are more likely to vote when given the opportunity, driven by a desire to utilize newly acquired rights and influenced by targeted political campaigns. The primary explanatory variable is the "Policy Age of Voting," which shifted from 21 in General Election 14 to 18 in General Election 15, providing a natural variation. I will also account for confounding variables like "Political Awareness at School" and "Socioeconomic Status (SES) Post-COVID-19" to isolate the effect of the voting age change. The dependent variable, "Overall Voters Turnout," will be measured by the percentage of eligible voters who participate in the elections. Supporting data would show increased turnout among the 18-21 age group in General Election 15, while a lack of change or a decrease in turnout would challenge the hypothesis.
+#### Data Sources
+- **Voter Turnout Data**: Collected from official election results for GE14 and GE15, sourced from Tindak Malaysia and government electoral databases.
+- **Socioeconomic Indicators**: Information on post-COVID-19 recovery and GDP trends, obtained from government statistics and international economic databases.
+- **Demographic Data**: Population statistics and voter demographics, focusing on the 18-21 age group.
 
-The voter turnout is easily accessible through github under "Tindak Malaysia".The socioeconomic conditions could be accessed through the government portal. 
+# Data Section
 
-
-Setup Chunk and load all data 
+### Setup Chunk and load all data 
 
 ```{r}
 library(readr)
@@ -29,6 +48,9 @@ library(readxl)
 library(tidyverse)
 library(dplyr)
 library(scales)
+library(knitr)
+library(kableExtra)
+library(broom)
 
 democracy <-  read_csv("DATA/democracy-index-by-source.csv")
 voter_turnout_14 <- read_csv("DATA/VOTER TURNOUT OF GE12,GE13 AND GE14.csv")
@@ -39,7 +61,7 @@ voter_turnout_15 <- read_csv("DATA/MALAYSIA_GE15_PARLIAMENT_ELECTIONS_v25122022.
 
 ```
 
-cleanup data 
+### Data Cleanup
 
 ```{r}
 democracy <- democracy |>
@@ -61,7 +83,7 @@ malaysia_gdp
 
 ```
 
-voter turnout General Election 14
+#### Data cleanup for voter turnout General Election 14
 
 ```{r}
 voter_turnout_14 <- voter_turnout_14 |>
@@ -80,7 +102,7 @@ voter_turnout_14
 
 ```
 
-Voting Turnout General Election 15 
+#### Data Cleanup for Voting Turnout General Election 15 
 
 ```{r}
 voter_turnout_15 <- voter_turnout_15 |>
@@ -107,11 +129,11 @@ voter_turnout <- voter_turnout |>
   ) |> 
   select(-total_voters_14)|> 
   mutate(pct_diff = pct_turnout_15 - pct_turnout_14)
-voter_turnout
+
 ```
 
 
-## Study the relationship between voting age requirement and voting turnout 
+### Study the relationship between voting age requirement and voting turnout 
 
 
 ```{r}
@@ -134,7 +156,6 @@ The bar plot shows a decrease in voter turnout percentage from GE14 to GE15 acro
 
 
 Section 2: The change in absolute number of voters 
-
 
 ```{r}
 voter_absolute <- voter_turnout |>
@@ -164,3 +185,97 @@ ggplot(voter_absolute, aes(x = reorder(state, -absolute_voters),
 
 Graph explanation
 The new graphs show two perspectives on voter turnout between GE14 and GE15: percentage change and absolute number of voters. The percentage turnout graph reflects the proportion of eligible voters who participated in the election, while the absolute voter number graph shows the raw count of voters. The percentage turnout decreased because the eligible voter population grew significantly in GE15, likely due to the inclusion of newly enfranchised 18-21-year-olds. However, the absolute number of voters increased, indicating that more people overall participated in GE15 compared to GE14. This discrepancy occurs because percentage turnout is influenced by the size of the eligible voter base (denominator), while absolute numbers are not. These findings highlight the importance of analyzing both metrics to understand voter behavior comprehensively, particularly in the context of changes in voter eligibility rules.
+
+
+## Result Section
+
+
+### Study the relationship between lowering voting age and the voter turnout 
+
+```{r}
+# Paired t-test to assess turnout changes between elections
+t_test_result <- t.test(voter_turnout$pct_turnout_15, voter_turnout$pct_turnout_14, paired = TRUE)
+print(t_test_result)
+
+
+t_test_table <- data.frame(
+  Statistic = c("t-value", "Degrees of Freedom", "p-value", "Mean Difference", "Confidence Interval"),
+  Value = c(
+    round(t_test_result$statistic, 2),
+    t_test_result$parameter,
+    format(t_test_result$p.value, scientific = TRUE),
+    round(t_test_result$estimate, 2),
+    paste0("[", round(t_test_result$conf.int[1], 2), ", ", round(t_test_result$conf.int[2],2),"]")))
+
+
+kable(t_test_table, format = "html", caption = "Paired t-test Results") |>
+  kable_styling(full_width = FALSE, position = "center")
+
+
+```
+
+The paired t-test reveals a statistically significant difference in voter turnout percentages between General Election 14 (GE14) and General Election 15 (GE15), with a mean difference of -6.89% and a p-value = 7.166e-07. The negative value indicates a notable decline in turnout, and the 95% confidence interval of [-8.49, -5.29] excludes 0. This therefore confirm that the decrease is not due to random chance. This result strongly supports rejecting the null hypothesis, which stated there was no difference in voter turnout percentages between the two elections.
+
+If we were to interpret the findings in this context, these findings suggest that lowering the voting age from 21 to 18 did not increase overall voter participation as a proportion of eligible voters. While more people voted in absolute numbers due to an expanded voter base, the percentage of eligible voters who participated decreased. This could reflect lower participation rates among the newly enfranchised 18–21 age group. 
+
+
+
+
+### Regression Analysis based on only Total Vote 
+```{r}
+# Simple linear regression
+model <- lm(pct_diff ~ total_vote_14 + total_vote_15, data = voter_turnout)
+summary(model)
+
+```
+The regression analysis looks at how changes in voter turnout percentages (pct_diff) between GE14 and GE15 are connected to the total number of votes in each election (total_vote_14 and total_vote_15). It shows that states with more voters in GE14 had smaller declines in turnout percentages, as indicated by the positive and statistically significant effect of total_vote_14. On the other hand, states with more voters in GE15 experienced larger declines in turnout percentages, shown by the negative effect of total_vote_15. This suggests that adding new voters, particularly younger ones aged 18–21, increased the total number of voters but reduced the percentage of people who voted. Overall, the model explains about 54% of the changes in turnout percentages and confirms that total voter counts in both elections are significant factors.
+
+However, the results also show that other factors, like political campaigns, regional differences, or economic conditions, might influence voter turnout since nearly half of the changes are unexplained by the model.
+
+
+### Regression analysis with the possible Confounding factor, which is economics 
+
+```{r}
+
+economic_summary <- malaysia_gdp |>
+  filter(date >= "2018-01-01" & date <= "2022-01-01") |>
+  summarise(
+    avg_gdp = mean(gdp, na.rm = TRUE),
+    avg_gni = mean(gni, na.rm = TRUE))
+
+voter_turnout <- voter_turnout |>
+  mutate(
+    avg_gdp = economic_summary$avg_gdp,
+    avg_gni = economic_summary$avg_gni)
+
+extended_model <- lm(pct_diff ~ total_vote_14 + total_vote_15 + avg_gdp + avg_gni, data = voter_turnout)
+
+
+
+
+tidy_results <- tidy(extended_model)
+tidy_results |>
+  mutate(
+    estimate = round(estimate, 3),
+    std.error = round(std.error, 3),
+    statistic = round(statistic, 3),
+    p.value = ifelse(p.value < 0.001, "<0.001", round(p.value, 3))) |>
+  kable(
+    caption = "Regression Results with Economic Confounders",
+    col.names = c("Term", "Estimate", "Std. Error", "t-value", "p-value"),
+    align = "c") |>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
+```
+The extended regression analysis highlights that economic conditions significantly influence changes in voter turnout percentages between GE14 and GE15 holding total votes in both elections constant. The coefficient for GDP is 0.050 and a p-value of 0.030, indicating that for every unit increase in GDP, the percentage change in turnout improves by 0.05%. 
+
+However, the coefficient for GNI is -0.040 with a p value of 0.025. This means that for every unit increase in GNI, the turnout percentage decreases by 0.04%. Both coefficients are statistically significant, with p-values below 0.05, highlighting the importance of economic conditions in shaping voter turnout. 
+
+I intend to include the GDP and GNI as it ensures the model accounts for their confounding effects, reducing bias and providing a clearer understanding of the factors driving turnout changes. 
+
+
+## Conclusion section
+
+The analysis shows partial support for the hypothesis that lowering the voting age from 21 to 18 increases voter turnout. While more people were eligible to vote in GE15, the overall turnout percentage declined, likely due to lower participation rates among younger. The regression analysis highlights that both total votes in GE14 and GE15, as well as economic factors like GDP and GNI, significantly influenced changes in turnout, emphasizing the importance of accounting for broader socioeconomic conditions. However, this analysis has limitations, including missing data on voter demographics, potential confounding factors like political campaigns and regional differences, and the lack of detailed state-level economic data. To improve the study, it would be valuable to gather more granular data, such as turnout by age group and state, and explore additional factors like education and voter outreach efforts. With more time and resources, these enhancements could provide deeper insights into the relationship between voter base changes and turnout.
+
+
