@@ -16,7 +16,7 @@ This project aims to investigate the impact of lowering the voting age from 21 t
 The decision to lower the voting age in Malaysia represents a significant policy shift and a unique opportunity to study political mobilization theories. Younger voters are traditionally seen as less likely to participate in elections, but providing them with the right to vote may spur engagement through political campaigns, social movements, and newly acquired civic responsibilities. Additionally, understanding the effects of this policy change can inform future electoral reforms in Malaysia and other countries considering similar actions.
 
 #### Main Hypothesis
-Lowering the voting age to 18 will result in increased voter turnout, particularly among the newly enfranchised demographic of 18-21-year-olds. This hypothesis is grounded in the theory of political mobilization, which posits that individuals are more likely to engage in political activities when they perceive a direct benefit, such as the right to vote. Additionally, targeted political campaigns and social media outreach are expected to enhance the participation of young voters.
+Lowering the voting age to 18 will result in increased voter turnout, particularly among the newly enfranchised demographic of 18-21-year-olds. This hypothesis is grounded in the theory of political mobilization, which posits that individuals are more likely to engage in political activities when they perceive a direct benefit, such as the right to vote.
 
 #### Variables
 - **Dependent Variable**: 
@@ -24,9 +24,7 @@ Lowering the voting age to 18 will result in increased voter turnout, particular
 - **Independent Variable**: 
   - Voting age policy, which shifted from 21 in GE14 to 18 in GE15.
 - **Confounders**: 
-  - Political awareness and civic education at the school level, which may influence young voters' engagement.
   - Socioeconomic status (SES) post-COVID-19, as economic stability and recovery can affect voter behavior.
-  - Regional differences in political culture and accessibility to polling stations.
 
 #### Objectives
 1. To quantify the change in voter turnout percentages and absolute voter numbers between GE14 and GE15.
